@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylechallenge.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Basic Banking System<br></h1>
+    <main>
+        <div>
+            <h2>Silahkan pilih transaksi yang akan dilakukan</h2    >
+            <!-- button yang berfungsi sebagai trigger untuk menjalankan fungsi dari javascript -->
+            <button type="button" id="ulangtambah" onclick="tambahsaldo()">Pengisian saldo</button>
+            <button type="button" id="ulangkurang" onclick="kurangsaldo()">Penarikan saldo</button>
+            <label for="resetsaldo">      
+                <button type="button" id="resetsaldo" onclick="reset_saldo()" class="resetbutton">Reset</button>
+            </label>
+            
+            <!-- di element p yang ber id 'resultsaldo' akan menjadi paragraf berisi informasi transaksi yang terjadi -->
+            <p id="resultsaldo"></p>
+
+        </div>
+        <div>
+            <h2>Transaction History</h2>
+            <button type="button" id="riwayatbutton" onclick="tambahelement()" class="riwayatbutton">Tampilkan Riwayat</button>
+            <div ><br>
+                <table id="riwayat">
+                    <tr>
+                        <th>No.</th>
+                        <th>Jenis Transaksi</th>
+                        <th>Nilai Transaksi</th>
+                        <th>Waktu Transaksi</th>
+                    </tr>
+                </table>
+                
+            </div>
+        </div>
+        
+         
+
+    </main>
+    
+    
+    <script src="bank_account.js">
+
+    </script>
+    
+</body>
+</html>

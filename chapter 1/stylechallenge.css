@@ -1,0 +1,62 @@
+body {
+
+    text-align: center;
+    background: url(https://img.freepik.com/free-photo/business-man-financial-inspector-secretary-making-report-calculating-checking-balance-internal-revenue-service-inspector-checking-document-audit-concept_1423-126.jpg?w=996&t=st=1695638088~exp=1695638688~hmac=ba7f4d2fb94d2377f49683cf7df0a787cc877d115f98b57f3e6c7f6ab05ad9f9) rgba(64, 120, 239, 0.3) no-repeat;
+    background-blend-mode: overlay;
+    background-size: cover;
+    font-family: sans-serif;
+}
+
+main {
+
+    width: 80%;
+    margin: auto;
+    padding-top: 4em;
+    padding-bottom: 4em;
+    background-color: rgba(131, 166, 240, 0.8);
+    min-height: 100%;
+    min-width: 80%;
+    max-width: 500px;
+}
+.tabletable{
+    border-collapse: collapse;
+}
+table{
+    border: 2px solid black;
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+td,th{
+    border: 2px solid black;
+    text-align: center;
+}
+
+
+
+
+p {
+    color: red;
+}
+
+label {
+    display: block;
+    margin-top: 2em;
+}
+
+button {
+    background-color: rgba(60, 151, 254, 0.8);
+    border-radius: 10px;
+    border-color: rgba(93, 183, 252, 0.8);
+    max-width: 100px;
+    color: antiquewhite;
+    max-height: 35px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.resetbutton {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
