@@ -33,7 +33,16 @@ td,th{
     text-align: center;
 }
 
-
+img{
+    margin: auto;
+    size: 100px;
+    display: none;
+    width: auto;
+    height: auto;
+    max-width: 70px;
+    max-height: 70px;
+    padding: 1em;
+}
 
 
 p {

@@ -17,12 +17,12 @@ let transaksi = function(x){
     saldo_baru = saldo
     
     if(x == 'penyetoran saldo'){
-        jenistransaksi = 'penyetoran saldo'
+        jenistransaksi = x
         input_saldo = window.prompt('Masukkan jumlah saldo yang akan disetor')
         saldo_baru += Number(input_saldo)
     }
     if(x == 'penarikan saldo'){
-        jenistransaksi = 'penarikan saldo'
+        jenistransaksi = x
         input_saldo = window.prompt('Masukkan jumlah saldo yang akan diambil')
         saldo_baru -= Number(input_saldo)
     }
@@ -84,12 +84,9 @@ class inputlist{
         Jenis_Transaksi : jenistransaksi,
         Waktu_Transaksi : formatwaktu,
         Besar_Transaksi : formatIDR.format(input_saldo)
-    })
-
-    }
+    })}
     
 }
-const myinputlist = new inputlist(jenistransaksi,formatwaktu,formatIDR.format(input_saldo))
 
 // fungsi untuk menampilkan riwayat transaksi yang telah dilakukan pengguna
 // dalam bentuk paragraf
@@ -119,9 +116,6 @@ function tambahelement (){
         tablecell3.innerHTML= `${list_transaksi[i].Besar_Transaksi}`
         tablecell4.innerHTML= `${list_transaksi[i].Waktu_Transaksi}`
         ++counter
-    }
-    
-
-}
+}}
 
 

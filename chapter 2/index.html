@@ -12,19 +12,17 @@
         <div>
             <h2>Silahkan pilih transaksi yang akan dilakukan</h2    >
             <!-- button yang berfungsi sebagai trigger untuk menjalankan fungsi dari javascript -->
-            <button type="button" id="ulangtambah" onclick="tambahsaldo()">Pengisian saldo</button>
-            <button type="button" id="ulangkurang" onclick="kurangsaldo()">Penarikan saldo</button>
-            <label for="resetsaldo">      
-                <button type="button" id="resetsaldo" onclick="reset_saldo()" class="resetbutton">Reset</button>
-            </label>
-            
+            <button type="button" id="deposit" onclick="setor.deposit()">Pengisian saldo</button>
+            <button type="button" id="penarikan" onclick="tarik.withdraw()">Penarikan saldo</button>
+
             <!-- di element p yang ber id 'resultsaldo' akan menjadi paragraf berisi informasi transaksi yang terjadi -->
             <p id="resultsaldo"></p>
-
+            
+            
         </div>
         <div>
             <h2>Transaction History</h2>
-            <button type="button" id="riwayatbutton" onclick="tambahelement()" class="riwayatbutton">Tampilkan Riwayat</button>
+            <button type="button" id="riwayatbutton" class="riwayatbutton" onclick="timeOUT()">Tampilkan Riwayat</button>
             <div ><br>
                 <table id="riwayat">
                     <tr>
@@ -34,7 +32,7 @@
                         <th>Waktu Transaksi</th>
                     </tr>
                 </table>
-                
+                <img src="../loading.gif" id="loading-image" alt="Loading..." />
             </div>
         </div>
         
@@ -43,7 +41,7 @@
     </main>
     
     
-    <script src="bank_account.js">
+    <script src="banking_system.js">
 
     </script>
     
