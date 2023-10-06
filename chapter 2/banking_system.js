@@ -34,6 +34,7 @@ class BankAccount{
         saldo_baru -= Number(input_saldo)
         if(saldo_baru < 0){
             resultsaldo.innerHTML = `Mohon Maaf saldo anda tidak cukup`
+            saldo_baru += Number(input_saldo)
         }
         else if(input_saldo<=0){
             resultsaldo.innerHTML = `Mohon Maaf nominal penarikan minimal adalah ${formatIDR.format(1)}`}
