@@ -20,30 +20,17 @@ class BankAccount{
         this.jenistransaksi= jenistransaksi
     }
     deposit(){
-        input_saldo = window.prompt('Masukkan jumlah saldo yang akan disetor')
+        saldo_baru = saldo
+        input_saldo = Number(window.prompt('Masukkan jumlah saldo yang akan disetor'))
+      
         saldo_baru += Number(input_saldo)
-        if(input_saldo<=0){resultsaldo.innerHTML = `Mohon Maaf nominal pengisian minimal adalah ${formatIDR.format(1)}`}
-        else if(input_saldo >= 1){
-            resultsaldo.innerHTML = `Saldo tabungan anda sekarang adalah ${formatIDR.format(saldo_baru)}`
-            this.updateDaftarRiwayat()
-        } 
-        else{resultsaldo.innerHTML = `Input nominal transaksi anda salah!`}
+        error_handling(this.jenistransaksi)
     }
     withdraw(){
+        saldo_baru = saldo
         input_saldo = window.prompt('Masukkan jumlah saldo yang akan ditarik')
         saldo_baru -= Number(input_saldo)
-        if(saldo_baru < 0){
-            resultsaldo.innerHTML = `Mohon Maaf saldo anda tidak cukup`
-            saldo_baru += Number(input_saldo)
-        }
-        else if(input_saldo<=0){
-            resultsaldo.innerHTML = `Mohon Maaf nominal penarikan minimal adalah ${formatIDR.format(1)}`}
-    // 2. jika saldo_baru masih tersisa atau bernilai 0, transaksi penarikan saldo akan dilanjutkan
-        else if(saldo_baru >= 0){
-            resultsaldo.innerHTML = `Saldo tabungan anda sekarang adalah ${formatIDR.format(saldo_baru)}`
-            this.updateDaftarRiwayat()
-        } 
-        else{resultsaldo.innerHTML = `Input nominal transaksi anda salah!`}
+        error_handling(this.jenistransaksi)
     }
     updateDaftarRiwayat(){
         waktu = new Date()
@@ -88,6 +75,39 @@ function timeOUT(){
     document.getElementById("loading-image").setAttribute("style","display:block")
     setTimeout(updateElementDaftarRiwayat, 400)
     }
+function error_handling(jenistransaksi){
+    try {
+        if(jenistransaksi === 'Penyetoran saldo'){
+            if(input_saldo<=0) throw new Error(`Mohon Maaf nominal pengisian minimal adalah ${formatIDR.format(1)}`)
+            else if(input_saldo >= 1 && (typeof saldo_baru === 'number')){
+                saldo = saldo_baru
+                resultsaldo.innerHTML = `Saldo tabungan anda sekarang adalah ${formatIDR.format(saldo)}`
+                setor.updateDaftarRiwayat()
+            }
+            else {
+                
+                throw new Error(`Input nominal transaksi anda salah!`) 
+            }
+        }
+        if(jenistransaksi === 'Penarikan saldo'){
+            if(saldo_baru < 0){
+                saldo_baru += input_saldo
+                throw new Error(`Mohon Maaf saldo anda tidak cukup`) 
+            }
+            else if(input_saldo<=0){
+                throw new Error(`Mohon Maaf nominal penarikan minimal adalah ${formatIDR.format(1)}`)}
+            else if(saldo_baru >= 0 && (typeof saldo_baru === 'number')){
+                saldo = saldo_baru
+                resultsaldo.innerHTML = `Saldo tabungan anda sekarang adalah ${formatIDR.format(saldo)}`
+                tarik.updateDaftarRiwayat()
+            } 
+            else throw new Error(`Input nominal transaksi anda salah!`)
+        }
+        
+    }catch (err) {
+        resultsaldo.innerHTML = err
+    }}
+
 
 const setor = new BankAccount('Penyetoran saldo')
 const tarik = new BankAccount('Penarikan saldo')
