@@ -2,7 +2,6 @@
 let saldo = 0 
 let input_saldo = 0
 let counter = 0
-let jenistransaksi= ''
 let list_transaksi = []
 let waktu = new Date()
 let saldo_baru = 0
@@ -105,11 +104,13 @@ function error_handling(jenistransaksi){
         }
         
     }catch (err) {
-        resultsaldo.innerHTML = err
+        resultsaldo.innerHTML = `${err}`
     }}
-
 
 const setor = new BankAccount('Penyetoran saldo')
 const tarik = new BankAccount('Penarikan saldo')
 
 
+document.querySelector("#deposit").addEventListener("click",()=> setor.deposit())
+document.querySelector("#penarikan").addEventListener("click",()=> tarik.withdraw())
+document.querySelector("#riwayatbutton").addEventListener("click",()=> timeOUT())
