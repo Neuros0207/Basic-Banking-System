@@ -3,18 +3,21 @@ create table nasabah (
     nasabah_id INT primary key generated always as identity,
     nama_nasabah varchar(100) not null,
     nomor_hp text not null,
-    alamat varchar(10) not null,
-    email varchar(30) not null
+    alamat varchar(100) 
 );
+
 create table akun (
     akun_id INT primary key generated always as identity,
-    saldo_akun DEC(15,2) not null default(0),
+    saldo_akun DEC(15,2) not null default(0) check (saldo_akun > 0),
     nasabah_id INT,
-
+    email varchar not null unique,
     foreign key (nasabah_id) references nasabah(nasabah_id) 
-    on update cascade
-    
+    on delete cascade on update cascade 
 );
+
+drop type if exists jenis;
+create type jenis as enum('Penyetoran','Penarikan','Transfer');
+
 create table transaksi(
     transaksi_id INT primary key generated always as identity,
     jenis_transaksi jenis ,
@@ -23,22 +26,22 @@ create table transaksi(
     id_tujuan int default null,
     akun_id INT,
     foreign key (akun_id)  references akun(akun_id) 
-    on update cascade
+    on delete cascade on update cascade
 );
-INSERT INTO nasabah(nama_nasabah, nomor_hp,alamat,email)
+INSERT INTO nasabah(nama_nasabah, nomor_hp,alamat)
 VALUES 
-('Andi','0811322355','Jakarta','andi223@gmail.com'),
-('Budi','0811366422','Bandung','budi992@gmail.com'),
-('Candra','0823154355','Samarinda','candra929@gmail.com');
-INSERT INTO akun(saldo_akun,nasabah_id)
+('Andi','0811322355','Jakarta'),
+('Budi','0811366422','Bandung'),
+('Candra','0823154355','Samarinda');
+INSERT INTO akun(saldo_akun,nasabah_id,email)
 VALUES 
-(45000000,1),
-(50000000,2),
-(60000000,2),
-(20100000,3);
+(45000000,1,'andi223@gmail.com'),
+(50000000,2,'budi992@gmail.com'),
+(60000000,2,'budi900@gmail.com'),
+(20100000,3,'candra929@gmail.com');
 INSERT INTO transaksi(jenis_transaksi,nilai_transaksi,akun_id)
 VALUES 
-('Penyetoran',2000000,1),
+('Penyetoran',0,1),
 ('Penarikan',1000000,1),
 ('Penyetoran',1000000,2),
 ('Penarikan',1000000,3),
@@ -54,7 +57,6 @@ VALUES
 select nasabah.nasabah_id, nasabah.nama_nasabah, count(akun.nasabah_id) as jumlah_akun 
 from nasabah
 left join akun on nasabah.nasabah_id = akun.nasabah_id 
-where nasabah.nasabah_id = 2
 group by nasabah.nasabah_id ;
 
 -- void function untuk mendeposit uang nasabah di akun yang dipakai
@@ -74,7 +76,6 @@ begin
    	values('Penyetoran',nominal,nomor_akun);
     commit;
 end;$$
-CALL deposit(2000000, 2);
 
 -- void function untuk menarik uang nasabah di akun yang dipakai
 create or replace procedure withdraw(
@@ -93,7 +94,6 @@ begin
    	values('Penarikan',nominal,nomor_akun);
     commit;
 end;$$
-CALL withdraw(3000000, 1);
 
 -- void function untuk men-transfer uang nasabah ke akun yang dituju
 create or replace procedure transfer(
@@ -114,11 +114,11 @@ begin
    	set saldo_akun = saldo_akun + nominal
    	where akun_id = nomor_tujuan;
 	--  menambahkan riwayat transaksi ke database table transaksi
-   	insert into transaksi(jenis_transaksi,nilai_transaksi,akun_id, akun_tujuan)
+   	insert into transaksi(jenis_transaksi,nilai_transaksi,akun_id, id_tujuan)
    	values('Transfer',nominal,nomor_akun, nomor_tujuan);
     commit;
 end;$$
-CALL transfer(2000000 , 2, 1);
+
+CALL transfer(2000000 , 2, 3);
 CALL deposit(1000000, 2);
 CALL withdraw(2000000, 3);
-
