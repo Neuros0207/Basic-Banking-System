@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const app = express()
 const port = 3000
-const routers = require('./router')
+import {routers} from './router/index.js'
 
 app.use(express.json())
 
