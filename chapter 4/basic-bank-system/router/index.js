@@ -1,15 +1,10 @@
-const express = require('express')
-const router = express.Router()
+import express from 'express'
+export const routers = express.Router()
 
 
-const users = require('./users')
-const accounts = require('./accounts')
-const transactions = require('./transactions')
-router.use(users)
-router.use(accounts)
-router.use(transactions)
-
-
-
-
-module.exports = router
+import { routerUsers } from './users.js'
+import { routerAccounts } from './accounts.js'
+import { routerTransactions } from './transactions.js'
+routers.use(routerUsers)
+routers.use(routerAccounts)
+routers.use(routerTransactions)
