@@ -1,7 +1,7 @@
-import express from 'express'
-export const routerTransactions = express.Router()
+const express = require('express')
+const router = express.Router()
 
-import * as controller from './../app/controller/index.js'
+const controller = require('./../app/controller')
 
 
 // V1 in Progress placeholder
@@ -12,8 +12,9 @@ import * as controller from './../app/controller/index.js'
 
 
 
-routerTransactions.post('/api/v2/transactions', controller.transactionsV2.postTransactions)
-routerTransactions.get('/api/v2/transactions', controller.transactionsV2.getTransactions)
-routerTransactions.get('/api/v2/transactions/:id', controller.transactionsV2.getTransactionById)
-routerTransactions.delete('/api/v2/transactions/:id', controller.transactionsV2.deleteTransactionById)
+router.post('/api/v2/transactions', controller.transactionsV2.postTransactions)
+router.get('/api/v2/transactions', controller.transactionsV2.getTransactions)
+router.get('/api/v2/transactions/:id', controller.transactionsV2.getTransactionById)
+router.delete('/api/v2/transactions/:id', controller.transactionsV2.deleteTransactionById)
 
+module.exports = router
