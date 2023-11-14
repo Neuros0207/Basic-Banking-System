@@ -14,12 +14,12 @@ router.post('/api/v2/auth/register', controller.authV2.registerForm)
 router.get('/api/v2/auth/login', async (req,res)=>{
     res.render('login_session')
 })
-router.get('/api/v2/auth/dashboard', controller.authV2.dashboard)
+
 router.post('/api/v2/auth/login', passport.authenticate('local',{
     successRedirect : '/api/v2/auth/dashboard',
     failureRedirect : '/api/v2/auth/login'
 }))
-
+router.get('/api/v2/auth/dashboard', controller.authV2.dashboard)
 
 
 // token based authentication

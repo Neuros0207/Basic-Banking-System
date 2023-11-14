@@ -120,8 +120,8 @@ module.exports = {
             return done(null, false, {message: error.message})
         }
     },
-    dashboard: async (req, res, next)=>{
-
-        res.render('dashboard', {user: req.user})
+    dashboard: async (req, res)=>{
+        console.log(req.user)
+        res.render('dashboard', { user : req.user})
     }
 }
