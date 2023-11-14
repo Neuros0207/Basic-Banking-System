@@ -43,7 +43,7 @@ module.exports = {
         })
         return showUser
     },
-    async userRegistration (userName, phoneNumber='', identityType = 'KTP', identityNumber, Address= ''){
+    async userRegistration (userName, phoneNumber='', identityType = 'KTP', identityNumber, Address= '', profilePic= 'https://ik.imagekit.io/neuros123/default-profile-pic.png'){
         try {
             let user = await prisma.users.create({
                 data: {
@@ -53,7 +53,8 @@ module.exports = {
                         create : {
                             phone_number : phoneNumber,
                             identity_type : identityType,
-                            address : Address
+                            address : Address,
+                            profile_picture : profilePic
                         }
                     }
                 }
@@ -109,6 +110,37 @@ module.exports = {
                 user_id : id
             }
         })
+    },
+    async findProfile(userId){
+        return await prisma.profiles.findFirst({
+            where : {
+                user_id : +userId
+            }
+        })
+    },
+    async updateProfile(user_id,profile_picture='https://ik.imagekit.io/neuros123/default-profile-pic.png'){
+        try {
+            const profileId = await prisma.profiles.findFirst({
+                where : {
+                    user_id : user_id
+                },
+                select : {
+                    profile_id : true
+                }
+            })
+            const result = await prisma.profiles.update({
+                where: {
+                    user_id : user_id,
+                    profile_id : profileId.profile_id
+                },
+                data : {
+                    profile_picture : profile_picture
+                }
+            })
+            return result
+        } catch (error) {
+            throw error
+        }
     }
 
 
