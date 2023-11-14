@@ -13,7 +13,7 @@ router.post('/api/v2/auth/login', passport.authenticate('local',{
 router.get('/api/v2/auth/register', async(req,res)=>{
     res.render('register')
 })
-router.get('/login', async (req,res)=>{
+router.get('/api/v2/auth/login', async (req,res)=>{
     res.render('login')
 })
 router.get('/api/v2/auth/dashboard', controller.authV2.dashboard)
@@ -23,6 +23,9 @@ router.post('/api/v2/auth/register', controller.authV2.registerForm)
 // token based authentication
 router.get('/whoami', auth , controller.authV2.whoami)
 router.post('/register', controller.authV2.registerNewAccount)
+router.get('/login', async (req,res)=>{
+    res.render('login')
+})
 router.post('/login', controller.authV2.loginAccount)
 
 

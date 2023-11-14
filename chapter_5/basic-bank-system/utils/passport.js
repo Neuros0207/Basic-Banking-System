@@ -6,11 +6,11 @@ const prisma = new PrismaClient()
 
 
 
-passport.serializeUser((user, done) => done(null, user.account_id))
-passport.deserializeUser(async (account_id, done)=> {
+passport.serializeUser((user, done) => done(null, user.email))
+passport.deserializeUser(async (email, done)=> {
     done(null, await prisma.accounts.findUnique({
         where : {
-            account_id
+            email
         }
     }))
 })
