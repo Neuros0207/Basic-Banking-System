@@ -130,5 +130,30 @@ module.exports = {
                 message : error.message
             })
         }
+    },
+    async putProfilePicById(req,res,next){
+        try {
+            const {url} = req.uploadImage
+            const isProfileExist = await model.findProfile(req.params.user_id)
+            if(!isProfileExist){
+                return res.status(400).json({
+                    status : 'fail',
+                    message : 'User profile does not exist'
+                })
+            }
+
+            const result = await model.updateProfile(+req.params.user_id, url)
+            if(result){
+                return res.status(200).json({
+                    status: true,
+                    message : 'User profile avatar updated',
+                    data : {
+                        avatar_url : result.profile_picture
+                    }
+                })
+            }
+        } catch (error) {
+            throw error
+        }
     }
 }

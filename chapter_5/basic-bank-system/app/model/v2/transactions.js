@@ -1,5 +1,4 @@
 const {PrismaClient} = require('@prisma/client')
-const transactions = require('../../controller/api/v2/transactions')
 const prisma = new PrismaClient()
 
 

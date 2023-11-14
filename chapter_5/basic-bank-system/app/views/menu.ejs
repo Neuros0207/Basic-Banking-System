@@ -1,0 +1,40 @@
+<h1>Hello Express View Engine</h1>
+<p>First time using express view Engine</p>
+
+
+
+<form action="/api/v3" method="get"></form>
+
+
+<form action="" method="post">
+    <% if(messages.error){ %>
+        <span style="color:red">
+            <%= messages.error %>
+        </span>
+    <% } %>
+    <div>
+        <input type="submit" value="Transfer">
+    </div>
+</form>
+
+<form action="/api/v3/transactions/withdraws" method="post">
+    <% if(messages.error){ %>
+        <span style="color:red">
+            <%= messages.error %>
+        </span>
+    <% } %>
+    <div>
+        <input type="submit" value="Deposit">
+    </div>
+</form>
+
+<form action="/api/v3/transactions/withdraws" method="post">
+    <% if(messages.error){ %>
+        <span style="color:red">
+            <%= messages.error %>
+        </span>
+    <% } %>
+    <div>
+        <input type="submit" value="Withdraw">
+    </div>
+</form>
