@@ -16,7 +16,7 @@ module.exports = {
                     message : 'Bad request : request is not complete '
                 })
             }
-            const search_id = await model.searchUserId(+req.body.user_id)
+            const search_id = await model.searchUserId(+user_id)
             if(!search_id ){
                 return res.status(404).json({
                     status : 'fail',
@@ -24,8 +24,8 @@ module.exports = {
                     message : 'User does not exist'
                 })
             }
-            let hashed_password = await auth.hashPassword(req.body.password)
-            const result = await model.createNewAccount(req.body.email,req.body.user_id, hashed_password)
+            let hashed_password = await auth.hashPassword(password)
+            const result = await model.createNewAccount(email,user_id, hashed_password)
             if(result){
                 return res.status(201).json({
                     status : 'success',
