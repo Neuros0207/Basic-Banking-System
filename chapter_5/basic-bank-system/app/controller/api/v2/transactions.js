@@ -4,10 +4,10 @@ module.exports = {
     async postTransfer(req,res){
         try {
             const {account_number}= req.user
-
-            if((account_number === req.body.norek_penerima)||
-        !req.body.norek_penerima || !account_number ||
-        !+req.body.amount || (+req.body.amount <= 0)){
+            const {norek_penerima,amount} = req.body
+            if((account_number === norek_penerima)||
+        !norek_penerima || !account_number ||
+        !+amount || (+amount <= 0)){
             return res.status(400).json({
                 status : 'fail',
                 code : 400,
@@ -15,9 +15,9 @@ module.exports = {
             })
         }
         const isSenderValid = await model.getAccountByAccNum(account_number)
-        const isRecipientValid = await model.getAccountByAccNum(req.body.norek_penerima)
+        const isRecipientValid = await model.getAccountByAccNum(norek_penerima)
         if(isRecipientValid && isSenderValid){
-            const result = await model.transactionTransfer(account_number,req.body.norek_penerima,req.body.amount)
+            const result = await model.transactionTransfer(account_number,norek_penerima,amount)
             if(result){
                 return res.status(201).json({
                     status : 'success',
@@ -44,7 +44,7 @@ module.exports = {
 },
 async postWithdraw(req,res){
     try {
-        const account_number = req.params.account_number
+        const {account_number} = req.user
         const {amount} = req.body
         if(!(+account_number) ||(!+amount) || (+amount <= 0) ){
         return res.status(400).json({
@@ -79,7 +79,7 @@ async postWithdraw(req,res){
 },
 async postDeposit(req,res){
     try {
-        const {account_number} = req.params
+        const {account_number} = req.user
         const {amount} = req.body
         if(!(+account_number) ||(!+amount) || (+amount <= 0) ){
         return res.status(400).json({
@@ -88,7 +88,7 @@ async postDeposit(req,res){
             message : 'Bad request '
         })
     }
-    const id_pengguna = await model.getAccountByAccNum(+req.params.account_number)
+    const id_pengguna = await model.getAccountByAccNum(+account_number)
     if(!id_pengguna){
         return res.status(404).json({
             status : 'fail',
@@ -96,7 +96,7 @@ async postDeposit(req,res){
             message : 'Account does not exist'
         })
     }
-    const result = await model.transactionDeposit(req.params.account_number,req.body.amount)
+    const result = await model.transactionDeposit(account_number,amount)
         return res.status(201).json({
             status : 'success',
             code : 201,

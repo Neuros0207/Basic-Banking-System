@@ -43,16 +43,24 @@ module.exports = {
         }
     },
     async loginAccount(req, res){
-
+        const {email,password} = req.body
         const accountData = await prisma.accounts.findFirst({
             where : {
-                email : req.body.email
+                email : email
             }
         })
-        const isCorrect = await auth.checkPassword(req.body.password, accountData.password)
+        if(!accountData){
+            return res.status(404).json({
+                status: 'fail',
+                code : 404,
+                message : 'Account does not exist'
+            })
+        }
+
+        const isCorrect = await auth.checkPassword(password, accountData.password)
 
         if(!isCorrect){
-            res.status(400).json({
+            return res.status(400).json({
                 status : 'fail',
                 code : 400,
                 message : 'Login gagal'
@@ -122,6 +130,7 @@ module.exports = {
     },
     dashboard: async (req, res)=>{
         console.log(req.user)
+        console.log(req.cookies)
         res.render('dashboard', { user : req.user})
     }
 }

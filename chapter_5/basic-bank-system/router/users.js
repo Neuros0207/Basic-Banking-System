@@ -18,8 +18,10 @@ router.post('/api/v2/users', controller.usersV2.postUsers)
 router.delete('/api/v2/users/:id', controller.usersV2.deleteUserById)
 router.put('/api/v2/users/:id', controller.usersV2.putUsersById)
 
-
-router.put('/profiles/profile-pic/:user_id',
+router.get('/profiles/profile-pic/:user_id', (req,res)=>{
+    res.render('uploadAvatar', {user_id : req.params.user_id})
+})
+router.post('/profiles/profile-pic/:user_id',
             multer.single('image'),
             controller.mediaV2.imagekitUpload,
             controller.usersV2.putProfilePicById)

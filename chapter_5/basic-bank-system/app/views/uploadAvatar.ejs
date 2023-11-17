@@ -1,0 +1,15 @@
+<h2>Upload Avatar image</h2>
+<form action="/profiles/profile-pic/1" method="post" enctype="multipart/form-data">
+    <% if(messages.error){ %>
+        <span style="color:red">
+            <%= messages.error %>
+        </span>
+    <% } %>
+    <div>
+        <label for="image">Password:</label>
+        <input type="file" id="image" name="image" required>
+    </div>
+    <div>
+        <input type="submit" value="Upload">
+    </div>
+</form>

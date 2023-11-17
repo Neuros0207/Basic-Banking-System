@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3300"
+      "url": "https://long-jade-gharial-wrap.cyclic.app"
     }
   ],
   "tags": [
@@ -331,13 +331,14 @@
         ],
         "summary": "Check the data of the current authorized user",
         "description": "Check the data of the current authorized user",
-        "operationId": "auth, whoami",
+        "operationId": "whoami",
         "parameters": [
           {
-            "name": "json-web-token",
+            "name": "securitySchemes",
             "in": "header",
-            "description": "",
-            "required": false,
+            "description": "json web token",
+            "required": true,
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -1540,18 +1541,6 @@
         "summary": "Balance Transfer feature",
         "description": "Balance Transfer feature",
         "operationId": "postTransfers",
-        "parameters": [
-          {
-            "name": "securitySchemes",
-            "in": "header",
-            "description": "json web token",
-            "required": true,
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Create a new Transaction in the website",
           "content": {
@@ -1877,18 +1866,6 @@
         "summary": "Balance Deposit feature",
         "description": "Balance Deposit feature",
         "operationId": "postDeposits",
-        "parameters": [
-          {
-            "name": "securitySchemes",
-            "in": "header",
-            "description": "json web token",
-            "required": true,
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Deposit cash to bank account",
           "content": {
@@ -2382,6 +2359,11 @@
         "type": "apiKey",
         "name": "authorization",
         "in": "header"
+      },
+      "authcookies" :{
+        "type":"apiKey",
+        "name": "authCookies",
+        "in" :"header"
       }
     }
   }
