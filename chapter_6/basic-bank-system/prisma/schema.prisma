@@ -14,6 +14,7 @@ model accounts {
   balance                                            Decimal        @default(100000) @db.Decimal(15, 2)
   user_id                                            Int
   email                                              String         @unique
+  googleId                                           String?
   password                                           String
   status                                             status
   role                                               role

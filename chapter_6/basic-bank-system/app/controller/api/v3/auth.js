@@ -121,5 +121,15 @@ module.exports = {
     },
     dashboard: async (req, res, next)=>{
         res.render('dashboard', {user: req.user})
+    },
+    oauth: async (req,res)=>{
+        delete req.user.password
+        const user = req.user
+        const token = await JWTsign(user)
+        return res.json({
+            status : 'success',
+            message : 'Berhasil login',
+            data : {token}
+        })
     }
 }

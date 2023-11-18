@@ -129,8 +129,6 @@ module.exports = {
         }
     },
     dashboard: async (req, res)=>{
-        console.log(req.user)
-        console.log(req.cookies)
         res.render('dashboard', { user : req.user})
     }
 }

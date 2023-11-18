@@ -433,7 +433,7 @@
         }
       }
     },
-    "/api/v2/accounts": {
+    "/api/v3/accounts": {
       "get": {
         "tags": [
           "Accounts"
@@ -691,7 +691,7 @@
         }
       }
     },
-    "/api/v2/accounts/{id}": {
+    "/api/v3/accounts/{id}": {
       "get": {
         "tags": [
           "Accounts"
@@ -915,7 +915,7 @@
         }
       }
     },
-    "/api/v2/users": {
+    "/api/v3/users": {
       "get": {
         "tags": [
           "Users"
@@ -1142,7 +1142,7 @@
         }
       }
     },
-    "/api/v2/users/{id}": {
+    "/api/v3/users/{id}": {
       "get": {
         "tags": [
           "Users"
@@ -1521,7 +1521,7 @@
         }
       }
     },
-    "/api/v2/transactions/transfers/": {
+    "/api/v3/transactions/transfers/": {
       "post": {
         "tags": [
           "Transactions"
@@ -1686,7 +1686,7 @@
         ]
       }
     },
-    "/api/v2/transactions/withdraws/": {
+    "/api/v3/transactions/withdraws/": {
       "post": {
         "tags": [
           "Transactions"
@@ -1846,7 +1846,7 @@
         ]
       }
     },
-    "/api/v2/transactions/deposits/": {
+    "/api/v3/transactions/deposits/": {
       "post": {
         "tags": [
           "Transactions"
@@ -2006,7 +2006,7 @@
         ]
       }
     },
-    "/api/v2/transactions": {
+    "/api/v3/transactions": {
       "get": {
         "tags": [
           "Transactions"
@@ -2122,7 +2122,7 @@
         }
       }
     },
-    "/api/v2/transactions/{id}": {
+    "/api/v3/transactions/{id}": {
       "get": {
         "tags": [
           "Transactions"

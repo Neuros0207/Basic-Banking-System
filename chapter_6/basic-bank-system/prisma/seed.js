@@ -20,7 +20,7 @@ async function main() {
   const seedUsers2 = await prisma.users.create({
     data: {
       user_name: 'Demo User',
-      identity_number: '6666666661',
+      identity_number: '66666666612',
       profiles: {
         create: {
           identity_type: 'KTP',
@@ -46,6 +46,15 @@ async function main() {
       user_id: 2,
       password: hashed_password,
       email: "userdemo@gmail.com",
+      status : "Open",
+      role: "User"
+    },
+  })
+  const seedAccounts3 = await prisma.accounts.create({
+    data: {
+      user_id: 2,
+      password: hashed_password,
+      email: "userdemo2@gmail.com",
       status : "Open",
       role: "User"
     },

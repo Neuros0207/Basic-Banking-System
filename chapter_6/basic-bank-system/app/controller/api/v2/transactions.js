@@ -112,25 +112,39 @@ async postDeposit(req,res){
     })
 }
 }
-    ,
+,
     async getTransactions(req,res){
-        if(req.query){
-            const result = await model.showAllTransactions(+req.query.page_number, +req.query.display_limit, +req.query.search_amount)
-            if(!result.length){
-                res.status(200).json({
-                    status : 'success',
-                    code : 200,
-                    message : 'Data empty'
+        try {
+            const {page,limit,search} = req.query
+        if(page === null || limit === null || search === null){
+            return res.status(400).json({
+                status : 'fail',
+                code : 400,
+                message : 'Bad request'
+            })
+        }
+        const result = await model.showAllTransactions(page, limit, search)
+        if(!result.length){
+            res.status(200).json({
+                status : 'success',
+                code : 200,
+                message : 'Data empty'
                 })
             }
-            else{
-                res.status(200).json({
+        else{
+            res.status(200).json({
                 status : 'success',
                 code : 200,
                 message: 'Request has succeeded',
                 data : result
             })
             }
+        } catch (error) {
+            res.status(500).json({
+                status: 'fail',
+                code : 500,
+                message : error
+            })
         }
     },
     async getTransactionByAccountId(req, res){

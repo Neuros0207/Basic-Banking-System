@@ -3,6 +3,7 @@ const router = express.Router()
 const controller = require('./../app/controller')
 const passport = require('./../utils/passport')
 const {auth} = require('../utils/jwt')
+const passportOauth = require('../utils/oauth')
 
 
 // session based authentication
@@ -20,7 +21,18 @@ router.post('/api/v2/auth/login', passport.authenticate('local',{
     failureRedirect : '/api/v2/auth/login'
 }))
 router.get('/api/v2/auth/dashboard', controller.authV2.dashboard)
+router.get('/auth/google',
+    passportOauth.authenticate('google', {
+        scope: ['profile' , 'email']
+    })
+)
+router.get('/auth/google/callback',
+    passportOauth.authenticate('google', {
+        failureRedirect : '/login',
+        session : false,
+    }), controller.authV3.oauth
 
+)
 
 // token based authentication
 router.get('/whoami', auth , controller.authV2.whoami)
