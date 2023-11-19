@@ -1,5 +1,5 @@
 {
-  "name": "basic-bank-system",
+  "name": "basic-bank-",
   "version": "1.0.0",
   "main": "index.js",
   "prisma": {
@@ -7,8 +7,8 @@
   },
   "scripts": {
     "test": "jest --coverage --detectOpenHandles",
-    "dev": "nodemon index.js",
-    "build": "prisma generate && prisma migrate deploy",
+    "dev": "nodemon ./index.js",
+    "build": "prisma generate && prisma migrate deploy && prisma db seed ",
     "start": "node index.js"
   },
   "author": "",
