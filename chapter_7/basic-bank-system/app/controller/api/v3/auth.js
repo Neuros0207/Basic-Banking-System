@@ -81,7 +81,6 @@ module.exports = {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: true,
-          signed: true,
         })
         .status(201)
         .json({
