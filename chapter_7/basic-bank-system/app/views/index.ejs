@@ -29,7 +29,7 @@
   </form>
   <script src="/socket.io/socket.io.js" charset="utf-8"></script>
   <script type="text/javascript">
-    var io = io();
+    var io = io(window.location.origin, { transports: ["websocket"] });
     io.on("notification", function (data) {
       alert(data);
     });
