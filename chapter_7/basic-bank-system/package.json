@@ -9,7 +9,7 @@
     "test": "jest --coverage --detectOpenHandles",
     "dev": "SET NODE_ENV=development&& node ./index.js",
     "build": "prisma generate && prisma migrate deploy",
-    "start": "SET NODE_ENV=production&& node index.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
