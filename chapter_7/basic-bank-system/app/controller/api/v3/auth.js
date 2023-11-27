@@ -2,7 +2,10 @@ const model = require("./../../../model/v3/accounts");
 const auth = require("./../../../../utils/auth");
 const { PrismaClient } = require("@prisma/client");
 const { JWTsign } = require("../../../../utils/jwt");
-const { sendMail } = require("../../../../utils/nodemailer");
+const {
+  sendMailActivation,
+  sendMailResetPassword,
+} = require("../../../../utils/nodemailer");
 const prisma = new PrismaClient();
 
 module.exports = {
@@ -31,22 +34,13 @@ module.exports = {
         hashed_password
       );
       if (result) {
-        await sendMail(
-          `Thanks for signing up.
-        This is a confirmation email for yusuf's project using  your email ${result.email} .
-
-
-        Regards,
-        Yusuf's portfolio project`,
-          `Thank you for signing up`,
-          result.email
-        );
+        await sendMailActivation(`Thank you for signing up`, result.email);
         next();
       }
     } catch (error) {
       res.status(500).json({
         status: "fail",
-        message: error,
+        message: "Internal Error: " + error,
       });
     }
   },
@@ -173,17 +167,7 @@ module.exports = {
 
     const token = await JWTsign(account_data);
     const link = `${req.protocol}://${req.get("host")}/resetpassword/${token}`;
-    await sendMail(
-      ``,
-      "Reset Password",
-      account_data.email,
-      `<p><b>Someone requested that the password
-    reset for the following account: </b><br>
-    To reset your password, visit the following address:<br>
-    <a href="${link}">${link}</a><br>
-    Your email: ${account_data.email}</p>
-    `
-    );
+    await sendMailResetPassword("Reset Password", account_data.email, link);
     res.status(200).json({
       status: "success",
       message: "Reset password link has been sent",
