@@ -5,7 +5,8 @@ const Sentry = require("@sentry/node");
 const express = require("express");
 const app = express();
 const port = 3300;
-const socketIO = require("socket.io");
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, { transports: ["websocket"] });
 const path = require("path");
 const flash = require("express-flash");
 const session = require("express-session");
@@ -58,10 +59,9 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
 app.use(routers);
 app.use(Sentry.Handlers.errorHandler());
 
-const server = app.listen(process.env.PORT || port, () =>
+const server = http.listen(process.env.PORT || port, () =>
   console.log(`Server run at http://127.0.0.1:${port}`)
 );
-const io = socketIO(server, { transport: ["websocket"] });
 io.on("connect", (socket) => {
   const user = [];
   socket.on("notification", (data) => {
