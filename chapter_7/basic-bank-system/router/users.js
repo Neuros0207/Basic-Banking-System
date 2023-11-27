@@ -29,7 +29,6 @@ router.delete("/api/v3/users/:id", auth, controller.usersV3.deleteUserById);
 router.put("/api/v3/users/:id", auth, controller.usersV3.putUsersById);
 
 router.get("/profiles/profile-pic", (req, res) => {
-  console.log(req.cookies["connect.sid"]);
   res.render("uploadAvatar");
 });
 router.post(

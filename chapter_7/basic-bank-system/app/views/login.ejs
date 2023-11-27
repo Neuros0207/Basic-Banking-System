@@ -1,3 +1,4 @@
+<script src="https://accounts.google.com/gsi/client" async></script>
 <h2>Login Page</h2>
 <form action="/login" method="post">
   <% if(messages.error){ %>
@@ -14,8 +15,13 @@
   <div>
     <input type="submit" value="Login" />
   </div>
-
-  <div>
-    <p><a href="/resetpassword">Lupa password?</a></p>
-  </div>
 </form>
+<div>
+  <p><a href="/resetpassword">Forgot password?</a></p>
+</div>
+<h3>or</h3>
+<div>
+  <a href="/auth/google"> Sign in with Google </a>
+</div>
+<br />
+<p>No account yet? <a href="/register">Register now</a></p>

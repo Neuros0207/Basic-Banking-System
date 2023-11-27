@@ -16,6 +16,8 @@ const swaggerJSON = require("./api_documentation.json");
 const swaggerUI = require("swagger-ui-express");
 const passport = require("./utils/passport");
 const { qrGenerate } = require("./app/controller/api/v2/media");
+
+require("./utils/api-documentation-env").apiDocumentationInitialization();
 app.use(morgan("combined"));
 
 app.use(cookieParser());
@@ -63,7 +65,6 @@ const io = socketIO(server);
 io.on("connect", (socket) => {
   const user = [];
   socket.on("notification", (data) => {
-    console.log(data);
     io.sockets.emit("notification", data);
   });
 });

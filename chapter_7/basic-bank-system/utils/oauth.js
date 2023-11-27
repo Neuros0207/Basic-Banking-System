@@ -2,9 +2,10 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const { PrismaClient } = require("@prisma/client");
+const { errorResponse } = require("./error_handling");
 const prisma = new PrismaClient();
 
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV } = process.env;
 
 passport.use(
   new GoogleStrategy(
@@ -12,11 +13,12 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL:
-        "https://long-jade-gharial-wrap.cyclic.app/auth/google/callback",
+        NODE_ENV === "development"
+          ? `http://localhost/auth/google/callback`
+          : "https://long-jade-gharial-wrap.cyclic.app/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
-        console.log(profile);
         const findUsers = await prisma.accounts.findFirst({
           where: {
             email: profile.emails[0].value,
@@ -63,7 +65,7 @@ passport.use(
         });
         done(null, user);
       } catch (error) {
-        done(error, null);
+        done(new errorResponse(500, `Database Error: ${error.message}`), null);
       }
     }
   )

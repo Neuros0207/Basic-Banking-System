@@ -34,9 +34,7 @@
   "paths": {
     "/register": {
       "post": {
-        "tags": [
-          "Auth (Token Based Authentication)"
-        ],
+        "tags": ["Auth (Token Based Authentication)"],
         "summary": "Create a new account for the website",
         "description": "Create a new account for the website",
         "operationId": "registerForm",
@@ -203,9 +201,7 @@
     },
     "/login": {
       "post": {
-        "tags": [
-          "Auth (Token Based Authentication)"
-        ],
+        "tags": ["Auth (Token Based Authentication)"],
         "summary": "Login to authenticate and create json web token",
         "description": "Login to authenticate and create json web token",
         "operationId": "loginAccount",
@@ -326,9 +322,7 @@
     },
     "/whoami": {
       "get": {
-        "tags": [
-          "Auth (Token Based Authentication)"
-        ],
+        "tags": ["Auth (Token Based Authentication)"],
         "summary": "Check the data of the current authorized user",
         "description": "Check the data of the current authorized user",
         "operationId": "whoami",
@@ -435,9 +429,7 @@
     },
     "/api/v3/accounts": {
       "get": {
-        "tags": [
-          "Accounts"
-        ],
+        "tags": ["Accounts"],
         "summary": "Get Accounts lists",
         "description": "Get Accounts Lists",
         "operationId": "getAccounts",
@@ -534,9 +526,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Accounts"
-        ],
+        "tags": ["Accounts"],
         "summary": "Add a new account for user to database",
         "description": "Add a new account for user to database",
         "operationId": "Accounts",
@@ -693,9 +683,7 @@
     },
     "/api/v3/accounts/{id}": {
       "get": {
-        "tags": [
-          "Accounts"
-        ],
+        "tags": ["Accounts"],
         "summary": "Get Accounts lists",
         "description": "Get Accounts Lists",
         "operationId": "getAccountsById",
@@ -808,9 +796,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Accounts"
-        ],
+        "tags": ["Accounts"],
         "summary": "Delete a user account from database",
         "description": "Delete a user account from database",
         "operationId": "deleteAccountById",
@@ -917,9 +903,7 @@
     },
     "/api/v3/users": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get Users lists",
         "description": "Get Users Lists",
         "operationId": "getUsers",
@@ -1012,9 +996,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Add a new user to database",
         "description": "Add a new user to database",
         "operationId": "Users",
@@ -1144,9 +1126,7 @@
     },
     "/api/v3/users/{id}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get Users details by userid",
         "description": "Get Users details by userid",
         "operationId": "getUsersById",
@@ -1259,9 +1239,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Update the existing user data",
         "description": "Update the existing user data",
         "operationId": "putUsersById",
@@ -1413,9 +1391,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Delete a user from database",
         "description": "Delete a user from database",
         "operationId": "deleteUsersById",
@@ -1523,9 +1499,7 @@
     },
     "/api/v3/transactions/transfers/": {
       "post": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Balance Transfer feature",
         "description": "Balance Transfer feature",
         "operationId": "postTransfers",
@@ -1688,9 +1662,7 @@
     },
     "/api/v3/transactions/withdraws/": {
       "post": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Balance Withdrawal feature",
         "description": "Balance Withdrawal feature",
         "operationId": "postWithdraws",
@@ -1848,9 +1820,7 @@
     },
     "/api/v3/transactions/deposits/": {
       "post": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Balance Deposit feature",
         "description": "Balance Deposit feature",
         "operationId": "postDeposits",
@@ -2008,9 +1978,7 @@
     },
     "/api/v3/transactions": {
       "get": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Get Transactions lists",
         "description": "Get Transactions Lists",
         "operationId": "getTransactions",
@@ -2124,9 +2092,7 @@
     },
     "/api/v3/transactions/{id}": {
       "get": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Get lists of transactions in an account",
         "description": "Get lists of transactions in an account",
         "operationId": "getTransactionsByAccountId",
@@ -2237,9 +2203,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "Delete a transaction from database",
         "description": "Delete a transaction from database",
         "operationId": "deleteTransactionById",
@@ -2348,10 +2312,10 @@
         "name": "authorization",
         "in": "header"
       },
-      "authcookies" :{
-        "type":"apiKey",
-        "name": "authCookies",
-        "in" :"header"
+      "cookieAuth": {
+        "type": "apiKey",
+        "name": "access_token",
+        "in": "cookie"
       }
     }
   }

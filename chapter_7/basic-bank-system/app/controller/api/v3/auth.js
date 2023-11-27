@@ -78,7 +78,11 @@ module.exports = {
       delete accountData.password;
       const token = await JWTsign(accountData);
       return res
-        .cookie("access_token", token, { httpOnly: true, secure: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          signed: true,
+        })
         .status(201)
         .json({
           status: "success",
@@ -144,15 +148,12 @@ module.exports = {
   dashboard: async (req, res, next) => {
     res.render("dashboard", { user: req.user });
   },
-  oauth: async (req, res) => {
+  oauth: async (req, res, next) => {
     delete req.user.password;
     const user = req.user;
     const token = await JWTsign(user);
-    return res.json({
-      status: "success",
-      message: "Berhasil login",
-      data: { token },
-    });
+    req.user.token = token;
+    next();
   },
   resetPasswordByEmail: async (req, res) => {
     const { email } = req.body;

@@ -23,6 +23,8 @@ router.post(
   })
 );
 router.get("/api/v2/auth/dashboard", controller.authV2.dashboard);
+
+router.get("/dashboard", authCookies, controller.authV3.dashboard);
 router.get(
   "/auth/google",
   passportOauth.authenticate("google", {
@@ -35,7 +37,12 @@ router.get(
     failureRedirect: "/login",
     session: false,
   }),
-  controller.authV3.oauth
+  controller.authV3.oauth,
+  (req, res) => {
+    res
+      .cookie("access_token", req.user.token, { secure: true, httpOnly: true })
+      .redirect("/dashboard");
+  }
 );
 
 // token based authentication
