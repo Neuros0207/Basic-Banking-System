@@ -2,6 +2,7 @@ const model = require("./../../../model/v3/accounts");
 const auth = require("./../../../../utils/auth");
 const { PrismaClient } = require("@prisma/client");
 const { JWTsign } = require("../../../../utils/jwt");
+const { sendMail } = require("../../../../utils/nodemailer");
 const prisma = new PrismaClient();
 
 module.exports = {
@@ -26,16 +27,21 @@ module.exports = {
       let hashed_password = await auth.hashPassword(password);
       const result = await model.createNewAccount(
         email,
-        user_id,
+        +user_id,
         hashed_password
       );
       if (result) {
-        return res.status(201).json({
-          status: "success",
-          code: 201,
-          message: "Account has been created",
-          data: result,
-        });
+        await sendMail(
+          `Thanks for signing up.
+        This is a confirmation email for yusuf's project using  your email ${result.email} .
+
+
+        Regards,
+        Yusuf's portfolio project`,
+          `Thank you for signing up`,
+          result.email
+        );
+        next();
       }
     } catch (error) {
       res.status(500).json({
@@ -45,18 +51,24 @@ module.exports = {
     }
   },
   async loginAccount(req, res) {
+    const { email, password } = req.body;
     const accountData = await prisma.accounts.findFirst({
       where: {
-        email: req.body.email,
+        email: email,
       },
     });
-    const isCorrect = await auth.checkPassword(
-      req.body.password,
-      accountData.password
-    );
+    if (!accountData) {
+      return res.status(404).json({
+        status: "fail",
+        code: 404,
+        message: "Account does not exist",
+      });
+    }
+
+    const isCorrect = await auth.checkPassword(password, accountData.password);
 
     if (!isCorrect) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "fail",
         code: 400,
         message: "Login gagal",
@@ -65,12 +77,15 @@ module.exports = {
     if (isCorrect) {
       delete accountData.password;
       const token = await JWTsign(accountData);
-      res.status(201).json({
-        status: "success",
-        code: 201,
-        message: "Login success",
-        data: { accountData, token },
-      });
+      return res
+        .cookie("access_token", token, { httpOnly: true, secure: true })
+        .status(201)
+        .json({
+          status: "success",
+          code: 201,
+          message: "Login success",
+          data: { accountData, token },
+        });
     }
   },
   async whoami(req, res) {
@@ -80,6 +95,12 @@ module.exports = {
       data: {
         user: req.user,
       },
+    });
+  },
+  async logoutAccount(req, res) {
+    return res.clearCookie("access_token").status(200).json({
+      status: "success",
+      message: "You're now logged out",
     });
   },
   async registerForm(req, res, next) {
@@ -92,7 +113,7 @@ module.exports = {
       });
       if (user) {
         req.flash("error", "Email sudah terdaftar!");
-        return res.redirect("/api/v3/auth/register");
+        return res.redirect("/register");
       }
       const createUser = await prisma.accounts.create({
         data: {
@@ -101,7 +122,7 @@ module.exports = {
           password: await auth.hashPassword(password),
         },
       });
-      req.flash("success", "Email berhasil didaftar!");
+
       return res.redirect("/api/v3/auth/login");
     } catch (error) {
       next(error);
@@ -132,5 +153,64 @@ module.exports = {
       message: "Berhasil login",
       data: { token },
     });
+  },
+  resetPasswordByEmail: async (req, res) => {
+    const { email } = req.body;
+    const account_data = await prisma.accounts.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (!account_data)
+      return res.status(404).json({
+        status: "fail",
+        message: "Account did not exist",
+      });
+    delete account_data.password;
+    delete account_data.balance;
+    delete account_data.createAt;
+    delete account_data.updatedAt;
+
+    const token = await JWTsign(account_data);
+    const link = `${req.protocol}://${req.get("host")}/resetpassword/${token}`;
+    await sendMail(
+      ``,
+      "Reset Password",
+      account_data.email,
+      `<p><b>Someone requested that the password
+    reset for the following account: </b><br>
+    To reset your password, visit the following address:<br>
+    <a href="${link}">${link}</a><br>
+    Your email: ${account_data.email}</p>
+    `
+    );
+    res.status(200).json({
+      status: "success",
+      message: "Reset password link has been sent",
+    });
+  },
+  resetPasswordData: async (req, res, next) => {
+    const { password } = req.body;
+    const { email, account_id } = req.user;
+    const account_data = await prisma.accounts.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (!account_data)
+      return res.status(404).json({
+        status: "fail",
+        message: "Account did not exist",
+      });
+    await prisma.accounts.update({
+      where: {
+        email: email,
+        account_id: account_id,
+      },
+      data: {
+        password: await auth.hashPassword(password),
+      },
+    });
+    next();
   },
 };

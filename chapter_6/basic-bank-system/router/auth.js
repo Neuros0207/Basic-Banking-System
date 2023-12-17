@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("./../app/controller");
 const passport = require("./../utils/passport");
-const { auth } = require("../utils/jwt");
+const { auth, resetPasswordToken, authCookies } = require("../utils/jwt");
 const passportOauth = require("../utils/oauth");
 
 // session based authentication
@@ -39,13 +39,36 @@ router.get(
 );
 
 // token based authentication
-router.get("/whoami", auth, controller.authV2.whoami);
-router.post("/register", controller.authV2.registerNewAccount);
+router.get("/whoami", authCookies, controller.authV3.whoami);
+router.get("/register", (req, res) => {
+  res.render("register");
+});
+router.post("/register", controller.authV3.registerNewAccount, (req, res) => {
+  res.render("register_redirect_page");
+});
 router.get("/login", async (req, res) => {
   res.render("login");
 });
-router.post("/login", controller.authV2.loginAccount);
+router.get("/logout", authCookies, controller.authV3.logoutAccount);
+router.post("/login", controller.authV3.loginAccount);
+router.get("/resetpassword", (req, res) => {
+  res.render("reset_password");
+});
+router.post("/resetpassword", controller.authV3.resetPasswordByEmail);
 
+router.get("/resetpassword/:reset_token", resetPasswordToken, (req, res) => {
+  res.render("reset_password_form", {
+    link: `/resetpassword/${req.params.reset_token}`,
+  });
+});
+router.post(
+  "/resetpassword/:reset_token",
+  resetPasswordToken,
+  controller.authV3.resetPasswordData,
+  (req, res) => {
+    res.render("reset_password_redirect");
+  }
+);
 // v3 token based
 
 router.post("/api/v3/auth/register", controller.authV3.registerNewAccount);

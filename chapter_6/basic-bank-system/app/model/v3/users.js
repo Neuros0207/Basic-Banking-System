@@ -60,9 +60,9 @@ module.exports = {
   },
   async userRegistration(
     userName,
+    identityNumber,
     phoneNumber = "",
     identityType = "KTP",
-    identityNumber,
     Address = "",
     profilePic = "https://ik.imagekit.io/neuros123/default-profile-pic.png"
   ) {
@@ -77,6 +77,20 @@ module.exports = {
               identity_type: identityType,
               address: Address,
               profile_picture: profilePic,
+            },
+          },
+        },
+        select: {
+          user_id: true,
+          user_name: true,
+          identity_number: true,
+          profiles: {
+            select: {
+              profile_id: true,
+              identity_type: true,
+              phone_number: true,
+              address: true,
+              profile_picture: true,
             },
           },
         },

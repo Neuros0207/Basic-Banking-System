@@ -133,8 +133,9 @@ module.exports = {
     },
     async putProfilePicById(req,res,next){
         try {
+            const {user_id} = req.user
             const {url} = req.uploadImage
-            const isProfileExist = await model.findProfile(req.params.user_id)
+            const isProfileExist = await model.findProfile(user_id)
             if(!isProfileExist){
                 return res.status(400).json({
                     status : 'fail',
@@ -142,7 +143,7 @@ module.exports = {
                 })
             }
 
-            const result = await model.updateProfile(+req.params.user_id, url)
+            const result = await model.updateProfile(+user_id, url)
             if(result){
                 return res.status(200).json({
                     status: true,

@@ -1,9 +1,27 @@
-<h1>Basic Bank System Index</h1>
-<p>Using express view engine</p>
+<title>Basic Bank System</title>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"
+></script>
+<body id="body">
+  <h1>Basic Bank System Index</h1>
+  <p>Using express view engine</p>
 
-<p>You can see my REST API Documentation here</p>
-<form action="/api-docs" method="get">
-  <div>
-    <input type="submit" value="API-Docs" />
-  </div>
-</form>
+  <p>You can see my REST API Documentation here</p>
+  <form action="/api-docs" method="get">
+    <div>
+      <input type="submit" value="API-Docs" />
+    </div>
+  </form>
+  <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var io = io();
+    io.on("notification", function (data) {
+      alert(data);
+    });
+    $("#body").ready(function () {
+      io.emit("notification", "Welcome to my project");
+    });
+  </script>
+</body>

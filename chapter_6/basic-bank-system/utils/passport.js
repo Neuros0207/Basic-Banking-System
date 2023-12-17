@@ -4,9 +4,9 @@ const { PrismaClient } = require("@prisma/client");
 const { authUser } = require("./../app/controller/api/v2/auth");
 const prisma = new PrismaClient();
 
-passport.serializeUser((user, done) => done(null, user.email));
-passport.deserializeUser(async (email, done) => {
-  done(
+passport.serializeUser((user, callback) => callback(null, user.email));
+passport.deserializeUser(async (email, callback) => {
+  callback(
     null,
     await prisma.accounts.findUnique({
       where: {

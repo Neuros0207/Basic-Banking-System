@@ -2,7 +2,9 @@ const model = require("./../../../model/v3/users");
 
 module.exports = {
   async getUsers(req, res) {
-    if (req.user.role !== "Admin") {
+    const { role } = req.user;
+    const { page_number, display_limit, search } = req.query;
+    if (role !== "Admin") {
       return res.status(401).json({
         status: "failed",
         message:
@@ -11,9 +13,9 @@ module.exports = {
       });
     }
     const query_result = await model.showAllUsers(
-      req.query.page_number,
-      req.query.display_limit,
-      req.query.search
+      page_number,
+      display_limit,
+      search
     );
     if (!query_result.length) {
       res.status(200).json({
@@ -31,14 +33,23 @@ module.exports = {
     }
   },
   async getUsersById(req, res) {
-    if (!+req.params.id) {
+    const { account_id } = req.user;
+    if (req.user.role !== "Admin") {
+      return res.status(401).json({
+        status: "failed",
+        message:
+          "you're not authorized to access this page! You need to be an admin",
+        data: null,
+      });
+    }
+    if (!+account_id) {
       return res.status(400).json({
         status: "fail",
         code: 400,
         message: "Bad Request!",
       });
     } else {
-      const query_result = await model.searchUserById(+req.params.id);
+      const query_result = await model.searchUserById(+account_id);
       if (query_result) {
         return res.status(200).json({
           status: "success",
@@ -57,7 +68,16 @@ module.exports = {
   },
   async postUsers(req, res) {
     try {
-      if (req.user.role !== "Admin") {
+      const { role } = req.user;
+      const {
+        user_name,
+        identity_number,
+        phone_number,
+        identity_type,
+        address,
+        profile_picture,
+      } = req.body;
+      if (role !== "Admin") {
         return res.status(401).json({
           status: "failed",
           message:
@@ -65,7 +85,7 @@ module.exports = {
           data: null,
         });
       }
-      if (!req.body.user_name || !req.body.identity_number) {
+      if (!user_name || !identity_number) {
         return res.status(400).json({
           status: "fail",
           code: 400,
@@ -73,11 +93,12 @@ module.exports = {
         });
       }
       result = await model.userRegistration(
-        req.body.user_name,
-        req.body.phone_number,
-        req.body.identity_type,
-        req.body.identity_number,
-        req.body.address
+        user_name,
+        identity_number,
+        phone_number,
+        identity_type,
+        address,
+        profile_picture
       );
       if (result) {
         res.status(201).json({
@@ -170,8 +191,9 @@ module.exports = {
   },
   async putProfilePicById(req, res, next) {
     try {
+      const { user_id } = req.user;
       const { url } = req.uploadImage;
-      const isProfileExist = await model.findProfile(req.params.user_id);
+      const isProfileExist = await model.findProfile(user_id);
       if (!isProfileExist) {
         return res.status(400).json({
           status: "fail",
@@ -179,7 +201,7 @@ module.exports = {
         });
       }
 
-      const result = await model.updateProfile(+req.params.user_id, url);
+      const result = await model.updateProfile(+user_id, url);
       if (result) {
         return res.status(200).json({
           status: true,
@@ -190,7 +212,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.send(error);
+      throw error;
     }
   },
 };

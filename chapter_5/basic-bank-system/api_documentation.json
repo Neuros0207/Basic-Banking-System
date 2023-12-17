@@ -332,18 +332,6 @@
         "summary": "Check the data of the current authorized user",
         "description": "Check the data of the current authorized user",
         "operationId": "whoami",
-        "parameters": [
-          {
-            "name": "securitySchemes",
-            "in": "header",
-            "description": "json web token",
-            "required": true,
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful operation",
