@@ -1,7 +1,7 @@
 const model = require("./../../../model/v3/accounts");
 const auth = require("./../../../../utils/auth");
 const { PrismaClient } = require("@prisma/client");
-const { JWTsign } = require("../../../../utils/jwt");
+const { JWTsign, JWTresetpassword } = require("../../../../utils/jwt");
 const {
   sendMailActivation,
   sendMailResetPassword,
@@ -165,7 +165,7 @@ module.exports = {
     delete account_data.createAt;
     delete account_data.updatedAt;
 
-    const token = await JWTsign(account_data);
+    const token = await JWTresetpassword(account_data);
     const link = `${req.protocol}://${req.get("host")}/resetpassword/${token}`;
     await sendMailResetPassword("Reset Password", account_data.email, link);
     res.status(200).json({

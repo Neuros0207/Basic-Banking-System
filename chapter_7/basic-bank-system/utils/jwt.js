@@ -57,6 +57,7 @@ async function resetPasswordToken(req, res, next) {
       data: null,
     });
   }
+
   jwt.verify(reset_token, JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).json({
@@ -75,9 +76,14 @@ async function JWTsign(user) {
   let token = jwt.sign(user, JWT_SECRET_KEY, { expiresIn: 60 * 60 });
   return token;
 }
+async function JWTresetpassword(data) {
+  let token = jwt.sign(data, JWT_SECRET_KEY, { expiresIn: 15 * 60 });
+  return token;
+}
 module.exports = {
   auth,
   JWTsign,
   resetPasswordToken,
   authCookies,
+  JWTresetpassword,
 };

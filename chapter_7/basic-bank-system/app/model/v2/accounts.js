@@ -11,11 +11,6 @@ module.exports = {
       },
       take: +display_limit,
       skip: +display_limit * (+page_number - 1),
-      select: {
-        account_id: true,
-        email: true,
-        balance: true,
-      },
     });
     return result;
   },

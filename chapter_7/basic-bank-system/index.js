@@ -19,14 +19,13 @@ const passport = require("./utils/passport");
 const { qrGenerate } = require("./app/controller/api/v2/media");
 require("./utils/api-documentation-env").apiDocumentationInitialization();
 app.use(morgan("combined"));
-
 app.use(cookieParser());
 app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
-    secret: "secret",
+    secret: "Nothing to see here",
     resave: false,
     saveUninitialized: true,
   })
@@ -49,7 +48,7 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 app.get("/", (req, res) => {
-  return res.render("index");
+  res.render("index");
 });
 app.use(express.static("public"));
 app.post("/qr/png", qrGenerate);
@@ -63,8 +62,7 @@ const server = http.listen(process.env.PORT || port, () =>
 );
 io.on("connection", (socket) => {
   socket.on("notification", (data) => {
-    io.sockets.emit("notification", data);
+    io.emit("notification", data);
   });
 });
-
 module.exports = app;
